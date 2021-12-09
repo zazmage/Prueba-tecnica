@@ -23,9 +23,7 @@ function App() {
     }
   };
 
-  const handleSearch = ({ target }) => {
-    setSearch(target.value);
-  };
+  const handleSearch = ({ target }) => setSearch(target.value);
 
   const sortByHigher = (a, b) => {
     if (a.price > b.price) return 1;
@@ -38,6 +36,12 @@ function App() {
     if (b.price < a.price) return -1;
     return 0;
   };
+
+  const filterSearch = (el) =>
+    search === ""
+      ? 1
+      : el.name.startsWith(search.toLocaleUpperCase()) ||
+        el.name.includes(search.toLocaleUpperCase());
 
   return (
     <div>
@@ -55,31 +59,16 @@ function App() {
           <Spinner />
         ) : sortPrice === null ? (
           data
-            .filter((el) =>
-              search === ""
-                ? 1
-                : el.name.startsWith(search.toLocaleUpperCase()) ||
-                  el.name.includes(search.toLocaleUpperCase())
-            )
+            .filter(filterSearch)
             .map((el) => <Product key={el.id} props={el} />)
         ) : sortPrice === "higherPrice" ? (
           [...data]
-            .filter((el) =>
-              search === ""
-                ? 1
-                : el.name.startsWith(search.toLocaleUpperCase()) ||
-                  el.name.includes(search.toLocaleUpperCase())
-            )
+            .filter(filterSearch)
             .sort(sortByHigher)
             .map((el) => <Product key={el.id} props={el} />)
         ) : (
           [...data]
-            .filter((el) =>
-              search === ""
-                ? 1
-                : el.name.startsWith(search.toLocaleUpperCase()) ||
-                  el.name.includes(search.toLocaleUpperCase())
-            )
+            .filter(filterSearch)
             .sort(sortByLower)
             .map((el) => <Product key={el.id} props={el} />)
         )}
