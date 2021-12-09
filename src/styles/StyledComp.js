@@ -38,3 +38,11 @@ export const ProductCard = styled.div`
     margin-top: 10px;
   }
 `;
+
+export const FilterBar = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 20px 0;
+`;

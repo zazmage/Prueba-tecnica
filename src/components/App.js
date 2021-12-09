@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../store/slices/database/index";
 import { Spinner } from "../styles/spinnerStyleComp";
-import { GlobalStyle, ProductCont } from "../styles/StyledComp";
+import { FilterBar, GlobalStyle, ProductCont } from "../styles/StyledComp";
 import Product from "./Product";
 
 function App() {
@@ -39,29 +39,47 @@ function App() {
     return 0;
   };
 
-  //console.log(search);
   return (
     <div>
       <GlobalStyle />
-      <div>
+      <FilterBar>
         <select onChange={handleChange} name="filterPrice" id="cars">
           <option value="sortBy">Ordenar por</option>
           <option value="higherPrice">Menor precio</option>
           <option value="lowerPrice">Mayor precio</option>
         </select>
-        <input type="text" onChange={handleSearch} />
-      </div>
+        <input type="text" onChange={handleSearch} placeholder="Buscar" />
+      </FilterBar>
       <ProductCont>
         {data === null ? (
           <Spinner />
         ) : sortPrice === null ? (
-          data.map((el) => <Product key={el.id} props={el} />)
+          data
+            .filter((el) =>
+              search === ""
+                ? 1
+                : el.name.startsWith(search.toLocaleUpperCase()) ||
+                  el.name.includes(search.toLocaleUpperCase())
+            )
+            .map((el) => <Product key={el.id} props={el} />)
         ) : sortPrice === "higherPrice" ? (
           [...data]
+            .filter((el) =>
+              search === ""
+                ? 1
+                : el.name.startsWith(search.toLocaleUpperCase()) ||
+                  el.name.includes(search.toLocaleUpperCase())
+            )
             .sort(sortByHigher)
             .map((el) => <Product key={el.id} props={el} />)
         ) : (
           [...data]
+            .filter((el) =>
+              search === ""
+                ? 1
+                : el.name.startsWith(search.toLocaleUpperCase()) ||
+                  el.name.includes(search.toLocaleUpperCase())
+            )
             .sort(sortByLower)
             .map((el) => <Product key={el.id} props={el} />)
         )}
